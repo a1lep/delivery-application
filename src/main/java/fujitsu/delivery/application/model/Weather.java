@@ -1,4 +1,6 @@
-package fujitsu.delivery_application.model;
+package fujitsu.delivery.application.model;
+
+import java.sql.Timestamp;
 
 public record Weather(
        String stationName,
@@ -6,7 +8,7 @@ public record Weather(
        Double airTemperature,
        Double windSpeed,
        String phenomenon,
-       Integer timestamp
+       Timestamp createTimestamp
 
 ) {
 }
