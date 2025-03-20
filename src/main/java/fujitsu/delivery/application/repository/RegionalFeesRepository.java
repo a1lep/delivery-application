@@ -2,9 +2,11 @@ package fujitsu.delivery.application.repository;
 
 import fujitsu.delivery.application.model.RegionalFees;
 
-public interface RegionalFeesRepository {
+import java.util.Optional;
 
-    RegionalFees getFeesByCityAndVehicle(String vehicle);
+public interface RegionalFeesRepository{
+
+    Optional<RegionalFees> getFeesByCityAndVehicle(String city, String vehicleType);
 
     void updateFees(RegionalFees regionalFees);
 

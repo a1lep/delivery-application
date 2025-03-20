@@ -17,13 +17,37 @@ CREATE TABLE IF NOT EXISTS regional_fees (
 
 CREATE TABLE IF NOT EXISTS weather_fees (
                                             id INT AUTO_INCREMENT PRIMARY KEY,
-                                            vehicle_type VARCHAR(255) NOT NULL,
-                                            condition_type VARCHAR(255) NOT NULL,
-                                            condition_value DECIMAL(5,2) NOT NULL,
+                                            vehicle_type VARCHAR(50) NOT NULL,
+                                            condition_type ENUM('AIR_TEMPERATURE', 'WIND_SPEED', 'WEATHER_PHENOMENON') NOT NULL,
+                                            condition_value JSON NOT NULL,
                                             extra_fee DECIMAL(5,2) NOT NULL
 );
 
-
--- INSERT INTO weather (station_name, wmo_code, air_temperature, wind_speed, phenomenon, timestamp) VALUES
---                                                                                                      ('Tallinn-Harku', 26038, 5.2, 3.5, 'Cloudy', 1710720000),
---                                                                                                      ('Tartu-Tõravere', 26242, 2.8, 5.0, 'Snow', 1710723600);
+INSERT INTO weather_fees (vehicle_type, condition_type, condition_value, extra_fee)
+SELECT * FROM (
+               SELECT
+                   'Scooter' AS vehicle_type, 'AIR_TEMPERATURE' AS condition_type, '{"min": -100, "max": -10}' AS condition_value, 1.00 AS extra_fee
+               UNION ALL
+               SELECT 'Scooter', 'AIR_TEMPERATURE', '{"min": -10, "max": 0}', 0.50
+               UNION ALL
+               SELECT 'Bike', 'AIR_TEMPERATURE', '{"min": -100, "max": -10}', 1.00
+               UNION ALL
+               SELECT 'Bike', 'AIR_TEMPERATURE', '{"min": -10, "max": 0}', 0.50
+               UNION ALL
+               SELECT 'Bike', 'WIND_SPEED', '{"min": 10, "max": 20}', 0.50
+               UNION ALL
+               SELECT 'Bike', 'WIND_SPEED', '{"min": 20.01, "max": 100}', -1
+               UNION ALL
+               SELECT 'Scooter', 'WEATHER_PHENOMENON', '{"phenomena": ["snow", "sleet"]}', 1.00
+               UNION ALL
+               SELECT 'Bike', 'WEATHER_PHENOMENON', '{"phenomena": ["snow", "sleet"]}', 1.00
+               UNION ALL
+               SELECT 'Scooter', 'WEATHER_PHENOMENON', '{"phenomena": ["rain"]}', 0.50
+               UNION ALL
+               SELECT 'Bike', 'WEATHER_PHENOMENON', '{"phenomena": ["rain"]}', 0.50
+               UNION ALL
+               SELECT 'Scooter', 'WEATHER_PHENOMENON', '{"phenomena": ["glaze", "hail", "thunder"]}', -1
+               UNION ALL
+               SELECT 'Bike', 'WEATHER_PHENOMENON', '{"phenomena": ["glaze", "hail", "thunder"]}', -1
+              ) AS new_entries
+WHERE NOT EXISTS (SELECT 1 FROM weather_fees);
