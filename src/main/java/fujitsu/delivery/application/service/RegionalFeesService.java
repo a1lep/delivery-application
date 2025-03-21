@@ -1,23 +1,24 @@
 package fujitsu.delivery.application.service;
 
-import fujitsu.delivery.application.model.RegionalFees;
-import fujitsu.delivery.application.repository.RegionalFeesRepository;
+import fujitsu.delivery.application.exception.ErrorCode;
+import fujitsu.delivery.application.exception.RequestException;
+import fujitsu.delivery.application.model.RegionalFee;
+import fujitsu.delivery.application.repository.RegionalFeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RegionalFeesService {
 
-    private final RegionalFeesRepository regionalFeesRepository;
+    private final RegionalFeeRepository regionalFeeRepository;
 
-    public Optional<RegionalFees> getFeesByCityAndVehicle(String city, String vehicleType) {
-        return regionalFeesRepository.getFeesByCityAndVehicle(city, vehicleType);
+    public RegionalFee getFeesByCityAndVehicle(String city, String vehicleType) {
+        return regionalFeeRepository.getFeesByCityAndVehicle(city, vehicleType).
+                orElseThrow(() -> new RequestException(ErrorCode.CITY_OR_VEHICLE_NOT_SUPPORTED, city, vehicleType));
     }
 
-    public void updateRegionalFees(RegionalFees updatedFee) {
-        regionalFeesRepository.updateFees(updatedFee);
+    public void updateRegionalFees(RegionalFee updatedFee) {
+        regionalFeeRepository.updateFees(updatedFee);
     }
 }

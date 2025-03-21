@@ -9,6 +9,5 @@ public record Weather(
        Double windSpeed,
        String phenomenon,
        Timestamp createTimestamp
-
 ) {
 }

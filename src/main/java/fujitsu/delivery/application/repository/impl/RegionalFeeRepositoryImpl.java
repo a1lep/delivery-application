@@ -1,7 +1,7 @@
 package fujitsu.delivery.application.repository.impl;
 
-import fujitsu.delivery.application.model.RegionalFees;
-import fujitsu.delivery.application.repository.RegionalFeesRepository;
+import fujitsu.delivery.application.model.RegionalFee;
+import fujitsu.delivery.application.repository.RegionalFeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class RegionalFeesRepositoryImpl implements RegionalFeesRepository {
+public class RegionalFeeRepositoryImpl implements RegionalFeeRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public Optional<RegionalFees> getFeesByCityAndVehicle(String city, String vehicleType) {
+    public Optional<RegionalFee> getFeesByCityAndVehicle(String city, String vehicleType) {
         final String sql = """
                 SELECT city, vehicle_type, base_fee
                 FROM regional_fees
@@ -30,7 +30,7 @@ public class RegionalFeesRepositoryImpl implements RegionalFeesRepository {
     }
 
     @Override
-    public void updateFees(RegionalFees regionalFees) {
+    public void updateFees(RegionalFee regionalFee) {
         final String sql = """
             UPDATE regional_fees
             SET base_fee = :baseFee
@@ -38,16 +38,16 @@ public class RegionalFeesRepositoryImpl implements RegionalFeesRepository {
             """;
 
         Map<String, Object> params = Map.of(
-                "city", regionalFees.city(),
-                "vehicleType", regionalFees.vehicleType(),
-                "baseFee", regionalFees.baseFee()
+                "city", regionalFee.city(),
+                "vehicleType", regionalFee.vehicleType(),
+                "baseFee", regionalFee.baseFee()
         );
 
         jdbcTemplate.update(sql, params);
     }
 
-    private RegionalFees mapRegionalFees(ResultSet rs) throws SQLException {
-        return new RegionalFees(
+    private RegionalFee mapRegionalFees(ResultSet rs) throws SQLException {
+        return new RegionalFee(
                 rs.getString("city"),
                 rs.getString("vehicle_type"),
                 rs.getDouble("base_fee")
