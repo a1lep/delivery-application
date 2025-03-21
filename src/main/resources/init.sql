@@ -22,7 +22,10 @@ CREATE TABLE IF NOT EXISTS weather_fees (
                                             condition_value JSON NOT NULL,
                                             extra_fee DECIMAL(5,2) NOT NULL
 );
-
+-- {
+--   "min" : -10.0,
+--   "max" : 0.0
+-- }
 INSERT INTO weather_fees (vehicle_type, condition_type, condition_value, extra_fee)
 SELECT * FROM (
                SELECT
