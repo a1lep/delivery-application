@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +51,7 @@ public class WeatherUpdateJob {
                 station.getAirTemperature(),
                 station.getWindSpeed(),
                 station.getPhenomenon(),
-                new Timestamp(System.currentTimeMillis())
+                null
         );
     }
 

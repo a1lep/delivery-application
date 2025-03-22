@@ -1,17 +1,17 @@
 package fujitsu.delivery.application.controller;
 
-import fujitsu.delivery.application.model.ConditionType;
 import fujitsu.delivery.application.model.WeatherFee;
 import fujitsu.delivery.application.service.WeatherFeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/weather-fee")
+@RequestMapping(value = "/weather-fee", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class WeatherFeeController {
 
@@ -23,10 +23,9 @@ public class WeatherFeeController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{vehicleType}/{conditionType}")
-    public ResponseEntity<List<WeatherFee>> getWeatherFee(@PathVariable String vehicleType, @PathVariable String conditionType) {
-        final ConditionType conditionTypeEnum = ConditionType.valueOf(conditionType.toUpperCase());
-        final List<WeatherFee> response = weatherFeeService.getWeatherFeeByVehicleAndCondition(vehicleType, conditionTypeEnum);
+    @GetMapping("/{vehicleType}")
+    public ResponseEntity<List<WeatherFee>> getWeatherFee(@PathVariable String vehicleType) {
+        final List<WeatherFee> response = weatherFeeService.getWeatherFeeByVehicleAndCondition(vehicleType);
         return ResponseEntity.ok(response);
     }
 }

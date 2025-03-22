@@ -1,7 +1,6 @@
 package fujitsu.delivery.application.service;
 
 
-import fujitsu.delivery.application.model.ConditionType;
 import fujitsu.delivery.application.model.WeatherFee;
 import fujitsu.delivery.application.repository.WeatherFeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +18,9 @@ public class WeatherFeeService {
         weatherFeeRepository.saveOrUpdateWeatherFee(weatherFee);
     }
 
-    public List<WeatherFee> getWeatherFeeByVehicleAndCondition(String vehicleType, ConditionType conditionType) {
+    public List<WeatherFee> getWeatherFeeByVehicleAndCondition(String vehicleType) {
         return weatherFeeRepository
-                .getWeatherFeeByVehicleAndCondition(vehicleType, conditionType);
+                .getWeatherFeeByVehicleAndCondition(vehicleType);
     }
 
 }

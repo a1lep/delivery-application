@@ -22,7 +22,7 @@ public class RegionalFeeRepositoryImpl implements RegionalFeeRepository {
         final String sql = """
                 SELECT city, vehicle_type, base_fee
                 FROM regional_fees
-                WHERE city = :city AND vehicle_type = :vehicleType
+                WHERE city LIKE CONCAT('%', :city, '%') AND vehicle_type = :vehicleType
                 """;
         return jdbcTemplate.query(sql, Map.of("city", city,
                                               "vehicleType", vehicleType),

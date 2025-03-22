@@ -20,29 +20,33 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @Override
     public void save(Weather weather) {
         final String sql = """
-                INSERT INTO weather(station_name, wmo_code, air_temperature, wind_speed, phenomenon, create_timestamp)
-                VALUES(:stationName, :wmoCode, :airTemperature, :windSpeed, :phenomenon, :createTimestamp)
+                INSERT INTO weather(station_name, wmo_code, air_temperature, wind_speed, phenomenon)
+                VALUES(:stationName, :wmoCode, :airTemperature, :windSpeed, :phenomenon)
                 """;
         jdbcTemplate.update(sql, Map.of(
                 "stationName", weather.stationName(),
                 "wmoCode", weather.wmoCode(),
                 "airTemperature", weather.airTemperature(),
                 "windSpeed", weather.windSpeed(),
-                "phenomenon", weather.phenomenon(),
-                "createTimestamp", weather.createTimestamp()
+                "phenomenon", weather.phenomenon()
         ));
     }
 
     @Override
     public Optional<Weather> getLatestByStationName(String stationName) {
         final String sql = """
-                SELECT station_name, wmo_code, air_temperature, wind_speed, phenomenon, create_timestamp
-                FROM weather WHERE station_name = :stationName
-                ORDER BY create_timestamp DESC
-                LIMIT 1
-                """;
-        return jdbcTemplate.query(sql, (rs, _) -> mapWeather(rs)).stream().findFirst();
+            SELECT station_name, wmo_code, air_temperature, wind_speed, phenomenon, create_timestamp
+            FROM weather 
+            WHERE station_name LIKE CONCAT('%', :stationName, '%')
+            ORDER BY create_timestamp DESC
+            LIMIT 1
+            """;
+
+        return jdbcTemplate.query(sql, Map.of("stationName", stationName), (rs, _) -> mapWeather(rs))
+                .stream()
+                .findFirst();
     }
+
 
     private Weather mapWeather(ResultSet rs) throws SQLException {
         return new Weather(

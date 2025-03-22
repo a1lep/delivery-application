@@ -40,15 +40,15 @@ public class WeatherFeeRepositoryImpl implements WeatherFeeRepository {
     }
 
     @Override
-    public List<WeatherFee> getWeatherFeeByVehicleAndCondition(String vehicleType, ConditionType conditionType) {
+    public List<WeatherFee> getWeatherFeeByVehicleAndCondition(String vehicleType) {
         final String sql = """
                 SELECT id, vehicle_type, condition_type, min_value, max_value, weather_phenomenon, extra_fee
                 FROM weather_fees
-                WHERE vehicle_type = :vehicleType AND condition_type = :conditionType
+                WHERE vehicle_type = :vehicleType 
                 """;
 
         return jdbcTemplate.query(sql,
-                Map.of("vehicleType", vehicleType, "conditionType", conditionType.name()),
+                Map.of("vehicleType", vehicleType),
                 (rs, _) -> mapWeatherFees(rs));
     }
 
