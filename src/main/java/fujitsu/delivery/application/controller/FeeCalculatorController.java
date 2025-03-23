@@ -1,5 +1,6 @@
 package fujitsu.delivery.application.controller;
 
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.service.CalculatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,7 +19,8 @@ public class FeeCalculatorController {
 
     @GetMapping("/{city}/{vehicleType}")
     public ResponseEntity<Double> calculateFee(@PathVariable String city, @PathVariable String vehicleType) {
-        final Double calculatedFee = calculatorService.calculateFee(city, vehicleType);
+        VehicleType vehicle = VehicleType.fromString(vehicleType.toUpperCase());
+        final Double calculatedFee = calculatorService.calculateFee(city, vehicle);
 
         return ResponseEntity.ok(calculatedFee);
     }

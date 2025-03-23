@@ -1,7 +1,7 @@
 package fujitsu.delivery.application.model;
 
 public record RegionalFee(
-        String vehicleType,
+        VehicleType vehicleType,
         String city,
         Double baseFee
 ) {

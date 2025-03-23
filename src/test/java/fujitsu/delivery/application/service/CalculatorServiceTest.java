@@ -1,10 +1,7 @@
 package fujitsu.delivery.application.service;
 
 import fujitsu.delivery.application.exception.RequestException;
-import fujitsu.delivery.application.model.ConditionType;
-import fujitsu.delivery.application.model.RegionalFee;
-import fujitsu.delivery.application.model.Weather;
-import fujitsu.delivery.application.model.WeatherFee;
+import fujitsu.delivery.application.model.*;
 import fujitsu.delivery.application.repository.RegionalFeeRepository;
 import fujitsu.delivery.application.repository.WeatherFeeRepository;
 import fujitsu.delivery.application.repository.WeatherRepository;
@@ -43,9 +40,9 @@ public class CalculatorServiceTest {
     public void calculateFee_shouldReturnCorrectFee_whenWeatherConditionsApply() {
         // Arrange
         String city = "Test City";
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.CAR;
         Weather weather = new Weather(city, 100.0, 25.0, 10.0, "Sunny", Timestamp.from(Instant.now()));
-        RegionalFee baseFee = new RegionalFee(city, vehicleType, 10.0);
+        RegionalFee baseFee = new RegionalFee(vehicleType, city, 10.0);
         WeatherFee tempFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 20.0, 30.0, null, vehicleType, 5.0);
         WeatherFee windFee = new WeatherFee(ConditionType.WIND_SPEED, 5.0, 15.0, null, vehicleType, 3.0);
         WeatherFee phenomFee = new WeatherFee(ConditionType.WEATHER_PHENOMENON, 0.0, 0.0, "sunny,rainy", vehicleType, 2.0);
@@ -68,9 +65,9 @@ public class CalculatorServiceTest {
     public void calculateFee_shouldThrowRequestException_whenWeatherNotSupported() {
         // Arrange
         String city = "Test City";
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.CAR;
         Weather weather = new Weather(city, 100.0, 25.0, 10.0, "Sunny", Timestamp.from(Instant.now()));
-        RegionalFee baseFee = new RegionalFee(city, vehicleType, 10.0);
+        RegionalFee baseFee = new RegionalFee(vehicleType, city, 10.0);
         WeatherFee windFee = new WeatherFee(ConditionType.WIND_SPEED, 5.0, 15.0, null, vehicleType, -1.0);
 
         when(weatherRepository.getLatestByStationName(city)).thenReturn(Optional.of(weather));
@@ -88,7 +85,7 @@ public class CalculatorServiceTest {
     public void calculateFee_shouldThrowRequestException_whenRegionalFeeNotFound() {
         // Arrange
         String city = "Test City";
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.CAR;
         Weather weather = new Weather(city, 100.0, 25.0, 10.0, "Sunny", Timestamp.from(Instant.now()));
 
         when(weatherRepository.getLatestByStationName(city)).thenReturn(Optional.of(weather));
@@ -104,7 +101,7 @@ public class CalculatorServiceTest {
     public void calculateFee_shouldThrowRequestException_whenWeatherNotFound() {
         // Arrange
         String city = "Test City";
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.CAR;
 
         when(weatherRepository.getLatestByStationName(city)).thenReturn(Optional.empty());
 

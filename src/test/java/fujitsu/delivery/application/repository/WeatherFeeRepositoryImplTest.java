@@ -1,6 +1,7 @@
 package fujitsu.delivery.application.repository;
 
 import fujitsu.delivery.application.model.ConditionType;
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.model.WeatherFee;
 import fujitsu.delivery.application.repository.impl.WeatherFeeRepositoryImpl;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class WeatherFeeRepositoryImplTest {
     @Test
     public void saveOrUpdateWeatherFee_shouldExecuteInsertOrUpdateQuery() {
         // Arrange
-        WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", "Car", 5.0);
+        WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", VehicleType.CAR, 5.0);
         when(jdbcTemplate.update(anyString(), anyMap())).thenReturn(1);
 
         // Act
@@ -75,7 +76,7 @@ public class WeatherFeeRepositoryImplTest {
     @Test
     public void getWeatherFeeByVehicleAndCondition_shouldReturnWeatherFeeList() {
         // Arrange
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.CAR;
         WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", vehicleType, 5.0);
         when(jdbcTemplate.query(anyString(), anyMap(), any(RowMapper.class)))
                 .thenReturn(List.of(weatherFee));
@@ -106,7 +107,7 @@ public class WeatherFeeRepositoryImplTest {
             when(rs.getDouble("min_value")).thenReturn(10.0);
             when(rs.getDouble("max_value")).thenReturn(20.0);
             when(rs.getString("weather_phenomenon")).thenReturn("Sunny");
-            when(rs.getString("vehicle_type")).thenReturn(vehicleType);
+            when(rs.getString("vehicle_type")).thenReturn(vehicleType.name());
             when(rs.getDouble("extra_fee")).thenReturn(5.0);
             WeatherFee mappedFee = rowMapper.mapRow(rs,0);
             assertEquals(weatherFee, mappedFee);
@@ -119,7 +120,7 @@ public class WeatherFeeRepositoryImplTest {
     @Test
     public void getWeatherFeeByVehicleAndCondition_shouldReturnEmptyList_whenNoWeatherFeesFound() {
         // Arrange
-        String vehicleType = "Truck";
+        VehicleType vehicleType = VehicleType.CAR;
         when(jdbcTemplate.query(anyString(), anyMap(), any(RowMapper.class)))
                 .thenReturn(List.of());
 

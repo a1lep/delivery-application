@@ -5,7 +5,7 @@ public record WeatherFee(
         Double minValue,  // For AIR_TEMPERATURE and WIND_SPEED
         Double maxValue,  // For AIR_TEMPERATURE and WIND_SPEED
         String weatherPhenomenon,  // For WEATHER_PHENOMENON like "snow", "rain"
-        String vehicleType,
+        VehicleType vehicleType,
         Double extraFee
 ) {
 }

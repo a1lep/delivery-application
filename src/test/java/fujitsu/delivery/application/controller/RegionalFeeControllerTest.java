@@ -2,6 +2,7 @@ package fujitsu.delivery.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fujitsu.delivery.application.model.RegionalFee;
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.service.RegionalFeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,8 +35,8 @@ public class RegionalFeeControllerTest {
     public void getFees_shouldReturnRegionalFee() throws Exception {
         // Arrange
         String city = "Test City";
-        String vehicleType = "Car";
-        RegionalFee regionalFee = new RegionalFee(city, vehicleType, 10.0);
+        VehicleType vehicleType = VehicleType.CAR;
+        RegionalFee regionalFee = new RegionalFee(vehicleType, city, 10.0);
         when(regionalFeeService.getFeesByCityAndVehicle(city, vehicleType)).thenReturn(regionalFee);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(regionalFeeController).build();
 
@@ -51,7 +52,7 @@ public class RegionalFeeControllerTest {
     @Test
     public void updateBaseFee_shouldReturnNoContent() throws Exception {
         // Arrange
-        RegionalFee regionalFee = new RegionalFee("Update City", "Bike", 15.0);
+        RegionalFee regionalFee = new RegionalFee(VehicleType.BIKE, "Update City", 15.0);
         String regionalFeeJson = objectMapper.writeValueAsString(regionalFee);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(regionalFeeController).build();
 
@@ -59,7 +60,7 @@ public class RegionalFeeControllerTest {
         mockMvc.perform(put("/api/regional-fee/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(regionalFeeJson))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
         verify(regionalFeeService).updateRegionalFees(regionalFee);
     }

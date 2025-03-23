@@ -1,6 +1,7 @@
 package fujitsu.delivery.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.service.CalculatorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +34,7 @@ public class FeeCalculatorControllerTest {
     public void calculateFee_shouldReturnCalculatedFee() throws Exception {
         // Arrange
         String city = "Test City";
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.CAR;
         Double calculatedFee = 25.0;
         when(calculatorService.calculateFee(city, vehicleType)).thenReturn(calculatedFee);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(feeCalculatorController).build();

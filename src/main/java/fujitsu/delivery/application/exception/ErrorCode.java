@@ -8,7 +8,8 @@ public enum ErrorCode {
     INVALID_CONDITION("Invalid weather condition provided: %s"),
     VALUE_NOT_FOUND("Value not found in our internal database."),
     INTERNAL_SERVER_ERROR("An internal server error occurred."),
-    CITY_OR_VEHICLE_NOT_SUPPORTED("City or vehicle type not supported: %s, %s");
+    VEHICLE_NOT_SUPPORTED("Vehicle is not supported for the selected vehicle type: %s"),
+    CITY_NOT_SUPPORTED("City not supported: %s");
 
     private final String message;
 

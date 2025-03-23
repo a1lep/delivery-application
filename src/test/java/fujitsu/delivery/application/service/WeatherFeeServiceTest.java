@@ -1,6 +1,7 @@
 package fujitsu.delivery.application.service;
 
 import fujitsu.delivery.application.model.ConditionType;
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.model.WeatherFee;
 import fujitsu.delivery.application.repository.WeatherFeeRepository;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ public class WeatherFeeServiceTest {
     @Test
     public void saveOrUpdateWeatherFee_shouldCallRepositorySaveOrUpdate() {
         // Arrange
-        WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", "Car", 5.0);
+        WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", VehicleType.CAR, 5.0);
 
         // Act
         weatherFeeService.saveOrUpdateWeatherFee(weatherFee);
@@ -39,7 +40,7 @@ public class WeatherFeeServiceTest {
     @Test
     public void getWeatherFeeByVehicleAndCondition_shouldReturnWeatherFeesFromRepository() {
         // Arrange
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.BIKE;
         WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", vehicleType, 5.0);
         List<WeatherFee> expectedWeatherFees = List.of(weatherFee);
         when(weatherFeeRepository.getWeatherFeeByVehicleAndCondition(vehicleType)).thenReturn(expectedWeatherFees);
@@ -55,7 +56,7 @@ public class WeatherFeeServiceTest {
     @Test
     public void getWeatherFeeByVehicleAndCondition_shouldReturnEmptyList_whenRepositoryReturnsEmptyList() {
         // Arrange
-        String vehicleType = "Truck";
+        VehicleType vehicleType = VehicleType.CAR;
         List<WeatherFee> expectedWeatherFees = List.of();
         when(weatherFeeRepository.getWeatherFeeByVehicleAndCondition(vehicleType)).thenReturn(expectedWeatherFees);
 

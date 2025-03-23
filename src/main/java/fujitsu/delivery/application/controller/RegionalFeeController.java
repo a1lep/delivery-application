@@ -3,6 +3,7 @@ package fujitsu.delivery.application.controller;
 import fujitsu.delivery.application.exception.ErrorCode;
 import fujitsu.delivery.application.exception.RequestException;
 import fujitsu.delivery.application.model.RegionalFee;
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.service.RegionalFeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -19,14 +20,15 @@ public class RegionalFeeController {
 
     @GetMapping("/{city}/{vehicleType}")
     public ResponseEntity<RegionalFee> getFees(@PathVariable String city, @PathVariable String vehicleType) {
-        return ResponseEntity.ok( regionalFeeService.getFeesByCityAndVehicle(city, vehicleType));
+        VehicleType vehicle = VehicleType.fromString(vehicleType.toUpperCase());
+        return ResponseEntity.ok( regionalFeeService.getFeesByCityAndVehicle(city, vehicle));
     }
 
     @PutMapping("/update")
     public ResponseEntity<Void> updateBaseFee(@RequestBody RegionalFee regionalFee) {
         try{
             regionalFeeService.updateRegionalFees(regionalFee);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (Exception e){
             throw new RequestException(ErrorCode.INTERNAL_SERVER_ERROR);
         }

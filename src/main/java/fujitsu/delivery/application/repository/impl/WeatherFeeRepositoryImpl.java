@@ -1,6 +1,7 @@
 package fujitsu.delivery.application.repository.impl;
 
 import fujitsu.delivery.application.model.ConditionType;
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.model.WeatherFee;
 import fujitsu.delivery.application.repository.WeatherFeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class WeatherFeeRepositoryImpl implements WeatherFeeRepository {
     }
 
     @Override
-    public List<WeatherFee> getWeatherFeeByVehicleAndCondition(String vehicleType) {
+    public List<WeatherFee> getWeatherFeeByVehicleAndCondition(VehicleType vehicleType) {
         final String sql = """
                 SELECT id, vehicle_type, condition_type, min_value, max_value, weather_phenomenon, extra_fee
                 FROM weather_fees
@@ -48,7 +49,7 @@ public class WeatherFeeRepositoryImpl implements WeatherFeeRepository {
                 """;
 
         return jdbcTemplate.query(sql,
-                Map.of("vehicleType", vehicleType),
+                Map.of("vehicleType", vehicleType.name()),
                 (rs, _) -> mapWeatherFees(rs));
     }
 
@@ -58,7 +59,7 @@ public class WeatherFeeRepositoryImpl implements WeatherFeeRepository {
                 rs.getDouble("min_value"),
                 rs.getDouble("max_value"),
                 rs.getString("weather_phenomenon"),
-                rs.getString("vehicle_type"),
+                VehicleType.valueOf(rs.getString("vehicle_type")),
                 rs.getDouble("extra_fee")
         );
     }

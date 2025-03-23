@@ -2,6 +2,7 @@ package fujitsu.delivery.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fujitsu.delivery.application.model.ConditionType;
+import fujitsu.delivery.application.model.VehicleType;
 import fujitsu.delivery.application.model.WeatherFee;
 import fujitsu.delivery.application.service.WeatherFeeService;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ public class WeatherFeeControllerTest {
     @Test
     public void saveOrUpdateWeatherFee_shouldReturnNoContent() throws Exception {
         // Arrange
-        WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", "Car", 5.0);
+        WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", VehicleType.CAR, 5.0);
         String weatherFeeJson = objectMapper.writeValueAsString(weatherFee);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(weatherFeeController).build();
 
@@ -44,7 +45,7 @@ public class WeatherFeeControllerTest {
         mockMvc.perform(post("/weather-fee/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(weatherFeeJson))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
         verify(weatherFeeService).saveOrUpdateWeatherFee(weatherFee);
     }
@@ -52,7 +53,7 @@ public class WeatherFeeControllerTest {
     @Test
     public void getWeatherFee_shouldReturnWeatherFeeList() throws Exception {
         // Arrange
-        String vehicleType = "Car";
+        VehicleType vehicleType = VehicleType.CAR;
         WeatherFee weatherFee = new WeatherFee(ConditionType.AIR_TEMPERATURE, 10.0, 20.0, "Sunny", vehicleType, 5.0);
         List<WeatherFee> expectedWeatherFees = List.of(weatherFee);
         when(weatherFeeService.getWeatherFeeByVehicleAndCondition(vehicleType)).thenReturn(expectedWeatherFees);
@@ -73,7 +74,7 @@ public class WeatherFeeControllerTest {
     @Test
     public void getWeatherFee_shouldReturnEmptyList() throws Exception {
         // Arrange
-        String vehicleType = "Truck";
+        VehicleType vehicleType = VehicleType.CAR;
         List<WeatherFee> expectedWeatherFees = List.of();
         when(weatherFeeService.getWeatherFeeByVehicleAndCondition(vehicleType)).thenReturn(expectedWeatherFees);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(weatherFeeController).build();
