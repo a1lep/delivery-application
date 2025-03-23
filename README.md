@@ -16,6 +16,7 @@ This project provides a RESTful API for calculating delivery fees based on city,
 - [Getting Started](#getting-started)
 - [Dependencies](#dependencies)
 - [Database Setup (H2)](#database-setup-h2)
+- [Possible Improvements](#improvements-)
 
 ## Project Structure
 ![img.png](img.png)
@@ -127,3 +128,9 @@ The [WeatherUpdateJob](src/main/java/fujitsu/delivery/application/jobs/WeatherUp
 
 The project uses an H2 in-memory database.
 The database schema and initial data are defined in [init.sql](src/main/resources/init.sql). To initialize the database, ensure that the `init.sql` file is executed when the application starts. The application is configured to automatically run these scripts against the H2 database.
+
+
+## Improvements 
+
+- Better testing like integration tests and cover exceptions with testing
+- More extendable to add cities or vehicles via database 
