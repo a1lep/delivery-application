@@ -4,6 +4,10 @@ This project provides a RESTful API for calculating delivery fees based on city,
 
 ## Table of Contents
 
+- [Requirements](#requirements)
+- [Dependencies](#dependencies)
+- [Database Setup (H2)](#database-setup-h2)
+- [Installation](#installation)
 - [Project Structure](#project-structure)
 - [Endpoints](#endpoints)
     - [Fee Calculator](#fee-calculator)
@@ -13,10 +17,37 @@ This project provides a RESTful API for calculating delivery fees based on city,
 - [Weather Update Job](#weather-update-job)
 - [Database Interactions](#database-interactions)
 - [Error Handling](#error-handling)
-- [Getting Started](#getting-started)
-- [Dependencies](#dependencies)
-- [Database Setup (H2)](#database-setup-h2)
 - [Possible Improvements](#improvements-)
+
+## Requirements
+
+- Java 21
+- Gradle
+
+## Dependencies
+
+-   Spring Boot
+-   Lombok
+-   Jackson XML
+-   Spring JDBC
+-   H2
+-   RestTemplate
+
+## Database Setup (H2)
+
+The project uses an H2 in-memory database.
+The database schema and initial data are defined in [init.sql](src/main/resources/init.sql). To initialize the database, ensure that the `init.sql` file is executed when the application starts. The application is configured to automatically run these scripts against the H2 database.
+
+## Installation
+
+To install and run the service, please follow these steps:
+
+1. Clone the repository.
+2. Navigate to the root directory of the project.
+3. Run `gradle build` to build the application.
+4. Run `java -jar build/libs/delivery-application-0.0.1-SNAPSHOT.jar` to start the application
+
+The default port is 8080.
 
 ## Project Structure
 ![img.png](img.png)
@@ -106,29 +137,6 @@ The [WeatherUpdateJob](src/main/java/fujitsu/delivery/application/jobs/WeatherUp
 -   Custom [RequestException](src/main/java/fujitsu/delivery/application/exception/RequestException.java) is used to handle application-specific errors.
 -   [ErrorCode](src/main/java/fujitsu/delivery/application/exception/ErrorCode.java) enum defines various error codes.
 -   Errors such as `CITY_NOT_SUPPORTED` and `WEATHER_NOT_SUPPORTED_FOR_VEHICLE` are handled.
-
-## Getting Started
-
-1.  Clone the repository.
-2.  Configure the database connection in `application.properties`.
-3.  Build the project using Maven or Gradle.
-4.  Run the `DeliveryApplication` class.
-5.  Access the API endpoints using a REST client (e.g., Postman).
-
-## Dependencies
-
--   Spring Boot
--   Lombok
--   Jackson XML
--   Spring JDBC
--   H2
--   RestTemplate
-
-## Database Setup (H2)
-
-The project uses an H2 in-memory database.
-The database schema and initial data are defined in [init.sql](src/main/resources/init.sql). To initialize the database, ensure that the `init.sql` file is executed when the application starts. The application is configured to automatically run these scripts against the H2 database.
-
 
 ## Improvements 
 
